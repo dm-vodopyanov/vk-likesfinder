@@ -36,7 +36,7 @@ class LikeChecker:
 
     @staticmethod
     def create_parser():
-        parser = DefaultHelpParser(prog='vk_like_checker', description='VK LikeChecker',
+        parser = DefaultHelpParser(prog='vk_likechecker', description='VK LikeChecker',
                                    formatter_class=argparse.RawTextHelpFormatter, add_help=True)
         parser.add_argument('-ai', '--app_id', required=True, default=None,
                             help='ID of application')
@@ -149,7 +149,7 @@ class LikeChecker:
         print()
 
         if not self.args.html_report:
-            self.args.html_report = 'vk_likes_checker_report_{}_{}.html'.format(self.args.user,
+            self.args.html_report = 'vk_likechecker_report_{}_{}.html'.format(self.args.user,
                                                                                 str(datetime.datetime.now()).replace(
                                                                                     ' ', '_').replace(
                                                                                     ':', '.').lower())
