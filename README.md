@@ -48,6 +48,8 @@ root@ubuntu:~$ vk_likechecker_lin --user *** --interval 100
 VK LikeChecker 0.0.1
 ===============================================================================
 
+HTML report created: C:\vk_likechecker\vk_likechecker_report_user_2018-12-22_02.55.59.011944.html
+
 Application ID and service token were applied successfully.
 VK API initialized successfully.
 

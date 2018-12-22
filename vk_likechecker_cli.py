@@ -33,6 +33,7 @@ class LikeCheckerCli:
         self.vk_likechecker.set_user(args.user)
         self.vk_likechecker.set_interval(args.interval)
         self.vk_likechecker.set_earliest_time()
+        self.vk_likechecker.set_location(self.location)
         self.vk_likechecker.set_header(__version__)
 
         self.exit_code = 0
@@ -67,7 +68,7 @@ class LikeCheckerCli:
         try:
             self.print_header_cli()
 
-            self.vk_likechecker.initialize_html_report()
+            self.vk_likechecker.initialize_html_report(stdout_on=True)
             self.vk_likechecker.initialize_vk_api(stdout_on=True)
             self.vk_likechecker.show_basic_info(html_report_on=True, stdout_on=True)
 

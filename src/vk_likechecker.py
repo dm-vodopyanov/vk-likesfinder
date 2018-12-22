@@ -30,7 +30,7 @@ class VkLikeChecker:
         self.vk_api_wrapper = None
         self.earliest_time = None
         self.likes_count = 0
-        self.location = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        self.location = None
         self.html_report = HtmlReport()
 
     def set_app_id(self, app_id):
@@ -51,6 +51,9 @@ class VkLikeChecker:
     def set_start_time(self, start_time):
         self.start_time = start_time
 
+    def set_location(self, location):
+        self.location = location
+
     def set_header(self, version):
         self.header = 'VK LikeChecker {}'.format(version)
 
@@ -59,13 +62,19 @@ class VkLikeChecker:
             raise VkLikeCheckerException('Searching interval is empty')
         self.earliest_time = int(time.time()) - int(self.interval) * 3600
 
-    def initialize_html_report(self):
+    def initialize_html_report(self, stdout_on=False):
         if not self.user:
             raise VkLikeCheckerException('User is not initialized')
+        if not self.location:
+            raise VkLikeCheckerException('Cannot identify tool location')
         self.html_report.set_path(os.path.join(self.location, 'vk_likechecker_report_{}_{}.html'.format(
             self.user, str(self.start_time).replace(' ', '_').replace(':', '.').lower())))
 
         self.html_report.initialize_file(self.html_report.path)
+
+        if stdout_on:
+            print('HTML report created: {}'.format(self.html_report.path))
+            print()
 
         self.html_report.write('<html><head><title>{title} - Report</title></head><body>\n'.format(title=self.header))
         self.html_report.write('<h2>{title}</h2><b>Report generated:</b> {date}<br><br>\n'.format(
