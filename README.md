@@ -6,7 +6,7 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
 **Download the latest VK LikeChecker release [here](https://github.com/dmitryvodop/vk_likechecker/releases).**
 
 ## How to use
-1. Create an Application on VK. It needs for secure connection to VK through VK API. Type anything to Title section, 
+1. [Create an Application](https://vk.com/editapp?act=create) on VK. It needs for secure connection to VK through VK API. Type anything to Title section, 
 e.g., VK LikeChecker, choose Platform as Standalone Application and press Connect Application button. When press Save button
 2. Go to Settings. To connect to VK API we will need Application ID and Service token on the Step 4.
 3. Download vk_likechecker_win.exe (for Windows) or vk_likechecker_lin (for Linux) application
