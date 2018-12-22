@@ -3,7 +3,7 @@
 VK LikeChecker is a command line tool which provides you to check which posts any VK user liked. It is written on 
 Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) module. 
 
-**Find the latest VK LikeChecker release [here](https://github.com/dmitryvodop/vk_likechecker/releases).**
+**Download the latest VK LikeChecker release [here](https://github.com/dmitryvodop/vk_likechecker/releases).**
 
 ## How to use
 1. Create an Application on VK. It needs for secure connection to VK through VK API. Type anything to Title section, 
