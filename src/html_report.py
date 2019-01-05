@@ -22,5 +22,5 @@ class HtmlReport:
 
     def close_file(self):
         if self.file:
-            self.file.write('</body></html>\n')
+            self.write('</body></html>\n')
             self.file.close()

@@ -1,4 +1,7 @@
 import vk_requests
+import time
+
+DELAY = 0.25
 
 
 class VkApiWrapperException(Exception):
@@ -6,27 +9,42 @@ class VkApiWrapperException(Exception):
 
 
 class VkApiWrapper:
-    def __init__(self, application_id, service_token):
-        self.application_id = int(application_id)
-        self.service_token = service_token
+    def __init__(self, app_id=None, login=None, password=None, token=None):
+        self.app_id = app_id
+        self.login = login
+        self.password = password
+        self.token = token
         self.api = None
         self.user_id = None
 
-    def set_application_id(self, application_id):
-        self.application_id = int(application_id)
+    def set_app_id(self, app_id):
+        self.app_id = app_id
 
-    def set_service_token(self, service_token):
-        self.service_token = service_token
+    def set_login(self, login):
+        self.login = login
+
+    def set_password(self, password):
+        self.password = password
+
+    def set_token(self, token):
+        self.token = token
 
     def set_user_id(self, user):
+        # TODO: requests.exceptions.ReadTimeout exception here
         self.user_id = self.api.users.get(user_ids=user)[0]['id']
 
     def initialize_vk_api(self):
-        self.api = vk_requests.create_api(app_id=self.application_id, service_token=self.service_token)
+        if self.app_id and self.login and self.password:
+            self.api = vk_requests.create_api(app_id=self.app_id, login=self.login, password=self.password)
+        elif self.token:
+            self.api = vk_requests.create_api(service_token=self.token)
+        else:
+            raise VkApiWrapperException('Login/password or token are empty.')
 
     def check_if_vk_api_initialized(self):
         if not self.api:
             raise VkApiWrapperException('VK API is not initialized')
+        time.sleep(DELAY)
         if self.api.users.get(user_ids=1)[0]['id']:
             return True
         else:
@@ -42,6 +60,7 @@ class VkApiWrapper:
             raise VkApiWrapperException('VK API is not initialized')
         if not self.user_id:
             raise VkApiWrapperException('User ID is not initialized')
+        time.sleep(DELAY)
         return self.api.users.get(user_ids=self.user_id)[0]['first_name']
 
     def get_user_last_name(self):
@@ -49,6 +68,7 @@ class VkApiWrapper:
             raise VkApiWrapperException('VK API is not initialized')
         if not self.user_id:
             raise VkApiWrapperException('User ID is not initialized')
+        time.sleep(DELAY)
         return self.api.users.get(user_ids=self.user_id)[0]['last_name']
 
     def get_user_public_pages(self):
@@ -56,20 +76,46 @@ class VkApiWrapper:
             raise VkApiWrapperException('VK API is not initialized')
         if not self.user_id:
             raise VkApiWrapperException('User ID is not initialized')
+        time.sleep(DELAY)
         return self.api.users.getSubscriptions(user_id=self.user_id, extended=1, count=200)
+
+    def get_user_groups(self):
+        if not self.api:
+            raise VkApiWrapperException('VK API is not initialized')
+        if not self.user_id:
+            raise VkApiWrapperException('User ID is not initialized')
+        time.sleep(DELAY)
+        return self.api.groups.get(user_id=self.user_id, filter='groups,', extended=1, count=1000)
 
     def get_user_friends(self):
         if not self.api:
             raise VkApiWrapperException('VK API is not initialized')
         if not self.user_id:
             raise VkApiWrapperException('User ID is not initialized')
+        time.sleep(DELAY)
         return self.api.friends.get(user_id=self.user_id, fields='first_name,last_name')
 
     def get_posts_from_wall(self, item_id, posts_offset):
         if not self.api:
             raise VkApiWrapperException('VK API is not initialized')
+        time.sleep(DELAY)
         return self.api.wall.get(owner_id=item_id, count=100, offset=posts_offset)
 
     def get_likes_from_post(self, owner_id, item_id, likes_offset):
+        if not self.api:
+            raise VkApiWrapperException('VK API is not initialized')
+        time.sleep(DELAY)
         return self.api.likes.getList(type='post', owner_id=owner_id, item_id=item_id, skip_own=0, count=1000,
                                       offset=likes_offset)
+
+    def get_public_page_or_group_page_info(self, item):
+        if not self.api:
+            raise VkApiWrapperException('VK API is not initialized')
+        time.sleep(DELAY)
+        return self.api.groups.getById(group_id=item)
+
+    def get_person_page_info(self, item):
+        if not self.api:
+            raise VkApiWrapperException('VK API is not initialized')
+        time.sleep(DELAY)
+        return self.api.users.get(user_ids=item)
