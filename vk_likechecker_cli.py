@@ -52,7 +52,8 @@ class LikeCheckerCli:
 
     def create_parser(self):
         current_system = self.get_platform_name()[:3]
-        parser = DefaultHelpParser(prog='vk_likechecker_cli_{}'.format(current_system), description='VK LikeChecker',
+        parser = DefaultHelpParser(prog='vk-likechecker-{}-cli-{}'.format(__version__, current_system),
+                                   description='VK LikeChecker {}'.format(__version__),
                                    formatter_class=argparse.RawTextHelpFormatter, add_help=True)
         parser.add_argument('-to', '--token', required=False, default=None,
                             help='Your access/service token. It needs for authorization\n'

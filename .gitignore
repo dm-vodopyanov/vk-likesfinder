@@ -6,6 +6,7 @@ __pycache__/
 # VK LikeChecker
 .idea
 vk_likechecker_report_*
+vk-likechecker-report-*
 authentication_config*
 authorization_token*
 bin

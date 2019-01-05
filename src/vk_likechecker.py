@@ -121,7 +121,7 @@ class VkLikeChecker:
             raise VkLikeCheckerException('User is not initialized')
         if not self.location:
             raise VkLikeCheckerException('Cannot identify tool location')
-        self.html_report.set_path(os.path.join(self.location, 'vk_likechecker_report_{}_{}.html'.format(
+        self.html_report.set_path(os.path.join(self.location, 'vk-likechecker-report-{}_{}.html'.format(
             self.user, str(self.start_time).replace(' ', '_').replace(':', '.').lower())))
 
         self.html_report.initialize_file(self.html_report.path)

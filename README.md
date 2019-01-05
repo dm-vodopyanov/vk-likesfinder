@@ -7,20 +7,21 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
 
 | Release  | Windows  | Linux  | macOS  | Docs  |
 | -------- | -------- | ------ | ------ | ----- |
-| 1.0.0    | [vk_likechecker-1.0.0-cli-win.exe](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-cli-win.exe) | [vk_likechecker-1.0.0-cli-lin](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-cli-lin) | [vk_likechecker-1.0.0-cli-mac](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-cli-mac) | [vk_likechecker-1.0.0-readme.pdf](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-readme.pdf) |
+| 1.0.0    | [vk-likechecker-1.0.0-cli-win.exe](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-cli-win.exe) | [vk-likechecker-1.0.0-cli-lin](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-cli-lin) | [vk-likechecker-1.0.0-cli-mac](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-cli-mac) | [vk-likechecker-1.0.0-readme.pdf](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-readme.pdf) |
 
 
 ## Getting started
-1. Download ```vk_likechecker_cli_win.exe``` (for Windows) or ```vk_likechecker_cli_lin``` 
-(for Linux) or ```vk_likechecker_cli_mac``` (for macOS) application.
+1. Download ```vk-likechecker-<VERSION>-cli-win.exe``` (for Windows) or ```vk-likechecker-<VERSION>-cli-lin``` 
+(for Linux) or ```vk-likechecker-<VERSION>-cli-mac``` (for macOS) application.
 2. Run the application in command line:  
-    ```vk_likechecker_cli_<PLATFORM> --interval <INTERVAL>```,    
+    ```vk-likechecker-<VERSION>-cli-<PLATFORM> --user <USER> --interval <INTERVAL>```,    
    where  
+   ```<VERSION>``` is the version of VK LikeChecker you use,  
    ```<PLATFORM>``` is ```win```, ```lin``` or ```mac```,  
    ```<USER>``` is person that should to be checked; supports short name of page (e.g., durov) 
    or user ID (e.g., 1),  
    ```<INTERVAL>``` is searching interval in hours till now, e.g., 10.   
-   E.g.: **```vk_likechecker_cli_win.exe --user durov --interval 10```**  
+   E.g.: **```vk-likechecker-1.0.0-cli-win.exe --user durov --interval 10```**  
    See the full list of [Supported command line options](#supported-command-line-options) for more.
 3. If you did not provide access/service token through ```--token``` option, or did not create 
 ```authorization_token.txt``` file with the token inside it in the directory with VK LikeChecker
@@ -29,7 +30,7 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
    1. by providing login/password to VK API
    2. by generating access token through your browser
    3. by generating service token for your VK application 
-4. Find the vk_likechecker_report_***.html report in the directory where application was launched.
+4. Find the vk-likechecker-report-***.html report in the directory where application was launched.
 
 
 ## Key features
@@ -178,12 +179,12 @@ VK LikeChecker supports reports in the following formats: HTML, command line and
 ### HTML
 The similar report will be generated in the directory where application was launched:  
 
-![Report example](https://raw.githubusercontent.com/dmitryvodop/vk_likechecker/master/images/report_example.png)
+![Report example](https://raw.githubusercontent.com/dmitryvodop/vk-likechecker/master/images/report_example.png)
 
 ### Command line
 
 ```
-root@ubuntu:~$ vk_likechecker_lin --user *** --interval 100
+root@ubuntu:~$ vk-likechecker-1.0.0-cli-lin --user *** --interval 100
 ===============================================================================
 VK LikeChecker 1.0.0
 ===============================================================================
@@ -256,7 +257,7 @@ The following will return:
 
 ## Supported command line options
 ```
-usage: vk_likechecker_cli_*** [-h] [-to TOKEN] [-at AUTHORIZATION_TOKEN_FILE]
+usage: vk-likechecker-cli-*** [-h] [-to TOKEN] [-at AUTHORIZATION_TOKEN_FILE]
                               -us USER -in INTERVAL [-pp PUBLIC_PAGES]
                               [-gr GROUPS] [-pe PEOPLE] [-hr HTML_REPORT] [-v]
 
