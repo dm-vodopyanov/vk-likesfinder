@@ -5,27 +5,23 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
 
 **Download the latest VK LikeChecker release [here](https://github.com/dmitryvodop/vk_likechecker/releases).**
 
-| Release  | Windows                          | Linux                        | macOS | Documentation |
-| -------- | -------------------------------- | ---------------------------- | ------------- | --- |
-| 1.0.0    | [vk_likechecker_cli_win.exe](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker_cli_win.exe)   | [vk_likechecker_cli_lin](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker_cli_lin)   | [vk_likechecker_cli_mac](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker_cli_mac) | [README.pdf](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/README.pdf) |
+| Release  | Windows  | Linux  | macOS  | Docs  |
+| -------- | -------- | ------ | ------ | ----- |
+| 1.0.0    | [vk_likechecker-1.0.0-cli-win.exe](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-cli-win.exe) | [vk_likechecker-1.0.0-cli-lin](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-cli-lin) | [vk_likechecker-1.0.0-cli-mac](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-cli-mac) | [vk_likechecker-1.0.0-readme.pdf](https://github.com/dmitryvodop/vk_likechecker/releases/download/1.0.0/vk_likechecker-1.0.0-readme.pdf) |
 
 
 ## Getting started
 1. Download ```vk_likechecker_cli_win.exe``` (for Windows) or ```vk_likechecker_cli_lin``` 
 (for Linux) or ```vk_likechecker_cli_mac``` (for macOS) application.
-2. Run the application in command line:
-```
-vk_likechecker_<PLATFORM>
-    --user <user that should be checked; supports 
-            short name of page (e.g., durov) or user ID (e.g., 1)> 
-    --interval <searching interval in hours till now, e.g., 10>
-```
-where ```<PLATFORM>``` is ```win```, ```lin``` or ```mac```.   
-E.g.:
-```
-vk_likechecker_cli_win.exe --user durov --interval 10
-```
-See the full list of [Supported command line options](#supported-command-line-options) for more. 
+2. Run the application in command line:  
+    ```vk_likechecker_cli_<PLATFORM> --interval <INTERVAL>```,    
+   where  
+   ```<PLATFORM>``` is ```win```, ```lin``` or ```mac```,  
+   ```<USER>``` is person that should to be checked; supports short name of page (e.g., durov) 
+   or user ID (e.g., 1)  
+   ```<INTERVAL>``` is searching interval in hours till now, e.g., 10.   
+   E.g.: **```vk_likechecker_cli_win.exe --user durov --interval 10```**  
+   See the full list of [Supported command line options](#supported-command-line-options) for more.
 3. If you did not provide access/service token through ```--token``` option, or did not create 
 ```authorization_token.txt``` file with the token inside it in the directory with VK LikeChecker
 binary/script, you will be redirected to user-interactive mode, where you can authorize to VK
@@ -33,17 +29,18 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
    1. by providing login/password to VK API
    2. by generating access token through your browser
    3. by generating service token for your VK application 
-3. Find the vk_likechecker_report_***.html report in the directory where application was launched.
+4. Find the vk_likechecker_report_***.html report in the directory where application was launched.
 
 
 ## Key features
 1. Cross-platform, supports Windows, Linux and macOS.
 2. Check selected user's likes on his friends, public and group pages
-3. Customize the list of public pages, groups and friends:
+3. Customize the lists of public pages, groups and friends (for more see [Customize the list of public pages, groups and friends](#customize-the-list-of-public-pages-groups-and-friends)):
    1. skip some pages,
-   2. add pages, selected user doesn't subscribed or people he is not friends with
+   2. add pages (public pages or groups), on which selected user doesn't subscribed
+   3. add people with whom selected user is not friends
 4. Select the searching interval in hours
-5. Clear and useful authorization process to VK API: for more see [Authorization methods](#authorization-methods)
+5. Clear and handy authorization process to VK API: for more see [Authorization methods](#authorization-methods)
 6. Different report formats: for more see [Reports](#reports)
 
 
@@ -116,6 +113,64 @@ Link: https://vk.com/editapp?act=create
 Enter service token here: _
 ```
 *(experimental, not for production use)*
+
+## Customize the list of public pages, groups and friends
+You can customize the lists of public pages, groups and people in which you want to find selected 
+user's likes.  
+By default, it is ```"all"```. It means that all user's public pages, groups and friends will be scanned:
+```
+--public_pages "all"
+--groups "all"
+--people "all"
+```
+If you want this scenario, you don't need to set ```"all"``` value to these options, just 
+don't mention them.  
+**NOTE**: you can't check user's groups using service token.
+If you want to add some custom public page(s), group(s) or person (people), pass 
+```"all,some_value"``` (comma is separator),  
+where ```"some_value"``` is the short name of  
+* public page, e.g., ```"pikabu"``` (https://vk.com/pikabu)  
+
+or
+* group, e.g., ```"the_elder_council"``` (https://vk.com/the_elder_council)
+
+or
+* person, e.g., ```"durov"``` or ```"1"```(https://vk.com/durov, https://vk.com/id1)
+
+E.g.,  
+```
+--public_pages "all,pikabu,tj"
+--groups "all,apple"
+--people "all,1"
+```
+If you want to scan only some specific pages (not the default ones), don't add ```"all"```, just pass short names of 
+public page(s), group(s) or person (people): ```"some_value_1,some_value_2"```.  
+E.g.,  
+```
+--public_pages "pikabu,tj"
+--groups "apple"
+--people "durov"
+```
+If you want to skip some public pages, groups or people from ```"all"```, add ```"!"``` symbol 
+(or ```"\!"``` on some Linux systems) at the beginning of skipping element, e.g., 
+```"!person_1,!person_2"``` or ```"all,!person_1,!person_2"``` - in this case all friends will be scanned, except two 
+friends with short names ```"person_1"``` and ```"person_2"```.  
+E.g.,
+```
+--public_pages "!leprum"
+--groups "all,!dccmc"
+--people "!durov"
+```
+If you want to completely skip checking of public pages, groups or people, pass ```"none"``` to 
+some of these options.  
+E.g.,
+```
+--public_pages "!leprum"
+--groups "none"
+--people "none"
+```
+In this case checking of groups and people will be skipped, and only public pages, except 
+https://vk.com/leprum, will be checked.
 
 ## Reports
 VK LikeChecker supports reports in the following formats: HTML, command line and Python list.
@@ -201,8 +256,8 @@ The following will return:
 
 ## Supported command line options
 ```
-usage: vk_likechecker_cli_*** [-h] [-to TOKEN] [-at AUTHORIZATION_TOKEN] -us
-                              USER -in INTERVAL [-pp PUBLIC_PAGES]
+usage: vk_likechecker_cli_*** [-h] [-to TOKEN] [-at AUTHORIZATION_TOKEN_FILE]
+                              -us USER -in INTERVAL [-pp PUBLIC_PAGES]
                               [-gr GROUPS] [-pe PEOPLE] [-hr HTML_REPORT] [-v]
 
 VK LikeChecker
@@ -222,7 +277,7 @@ optional arguments:
                         be automatically used on authorization step. If you
                         need to obtain token, you will be moved to
                         user-interactive mode. After that
-                        C:\vk_likechecker\authorization_token.txt
+                        authorization_token.txt
                         will be created automatically, and you won't need to
                         obtain your token again.
   -us USER, --user USER
@@ -232,58 +287,67 @@ optional arguments:
   -pp PUBLIC_PAGES, --public_pages PUBLIC_PAGES
                         A list of public pages, in which likes will be
                         searched.
-                        1. It's "default" by default. It means that all
+                        1. It's "all" by default. It means that all
                            user's public pages will be scanned.
                         2. If you want to add some custom public page, pass
-                           "default,some_public_page" (comma is separator),
+                           "all,some_public_page" (comma is separator),
                            where "some_public_page" is the short name of page
                            (vk.com/some_public_page).
                         3. If you want to scan only some specific pages,
-                           don't add "default", just pass short names of
+                           don't add "all", just pass short names of
                            public page: "public_page_1,public_page_2".
                         4. If you want to skip some public pages from
-                           "default", add "!" symbol (or "\!" on some Linux
+                           "all", add "!" symbol (or "\!" on some Linux
                            systems) at the beginning of skipping element,
-                           e.g., "default,!public_page_1,!public_page_2" - in
+                           e.g., "!public_page_1,!public_page_2"  or
+                           "all,!public_page_1,!public_page_2" - in
                            this case all public pages will be scanned, except
                            two public pages with short names "public_page_1"
                            and "public_page_2".
+                        5. If you want to completely skip checking of public
+                           pages, pass "none".
   -gr GROUPS, --groups GROUPS
                         A list of groups, in which likes will be searched.
-                        1. It's "default" by default. It means that all
+                        1. It's "all" by default. It means that all
                            user's groups will be scanned. NOTE - you can't
                            check user's groups using service token.
                         2. If you want to add some custom group, pass
-                           "default,some_group" (comma is separator), where
+                           "all,some_group" (comma is separator), where
                            "some_group" is the short name of group
                            (vk.com/some_group).
                         3. If you want to scan only some specific groups,
-                           don't add "default", just pass short names of
+                           don't add "all", just pass short names of
                            group: "group_1,group_2".
-                        4. If you want to skip some groups from "default", add
+                        4. If you want to skip some groups from "all", add
                            "!" symbol (or "\!" on some Linux systems) at the
                            beginning of skipping element, e.g.,
-                           "default,!group_1,!group_2" - in this case all
-                           groups will be scanned, except two groups with
-                           short names "group_1" and "group_2".
+                           "!group_1,!group_2" or "all,!group_1,!group_2" -
+                           in this case all groups will be scanned, except
+                           two groups with short names "group_1" and
+                           "group_2".
+                        5. If you want to completely skip checking of groups,
+                           pass "none".
   -pe PEOPLE, --people PEOPLE
                         A list of people, in which likes will be searched.
-                        1. It's "default" by default. It means that all
+                        1. It's "all" by default. It means that all
                            user's friends will be scanned.
                         2. If you want to add some custom person, pass
-                           "default,some_person" (comma is separator), where
+                           "all,some_person" (comma is separator), where
                            "some_person" is the short name of person's page
                            (vk.com/some_person). As usual, user IDs are
                            supported.
                         3. If you want to scan only some specific people,
-                           don't add "default", just pass short names/IDs of
+                           don't add "all", just pass short names/IDs of
                            people: "person_1,person_2".
-                        4. If you want to skip some people from "default", add
+                        4. If you want to skip some people from "all", add
                            "!" symbol (or "\!" on some Linux systems) at the
                            beginning of skipping element, e.g.,
+                           "!person_1,!person_2" or
                            "default,!person_1,!person_2" - in this case all
                            friends will be scanned, except two friends with
                            short names "person_1" and "person_2".
+                        5. If you want to completely skip checking of people,
+                           pass "none".
   -hr HTML_REPORT, --html_report HTML_REPORT
                         Custom path to HTML report (by default it generates in
                         the folder where VK LikeChecker binary/script is
