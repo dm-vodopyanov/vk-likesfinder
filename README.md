@@ -18,7 +18,7 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
    where  
    ```<PLATFORM>``` is ```win```, ```lin``` or ```mac```,  
    ```<USER>``` is person that should to be checked; supports short name of page (e.g., durov) 
-   or user ID (e.g., 1)  
+   or user ID (e.g., 1),  
    ```<INTERVAL>``` is searching interval in hours till now, e.g., 10.   
    E.g.: **```vk_likechecker_cli_win.exe --user durov --interval 10```**  
    See the full list of [Supported command line options](#supported-command-line-options) for more.
@@ -125,7 +125,7 @@ By default, it is ```"all"```. It means that all user's public pages, groups and
 ```
 If you want this scenario, you don't need to set ```"all"``` value to these options, just 
 don't mention them.  
-**NOTE**: you can't check user's groups using service token.
+**NOTE**: you can't check user's groups using service token.  
 If you want to add some custom public page(s), group(s) or person (people), pass 
 ```"all,some_value"``` (comma is separator),  
 where ```"some_value"``` is the short name of  
@@ -135,7 +135,7 @@ or
 * group, e.g., ```"the_elder_council"``` (https://vk.com/the_elder_council)
 
 or
-* person, e.g., ```"durov"``` or ```"1"```(https://vk.com/durov, https://vk.com/id1)
+* person, e.g., ```"durov"``` or ```"1"``` (https://vk.com/durov, https://vk.com/id1)
 
 E.g.,  
 ```
