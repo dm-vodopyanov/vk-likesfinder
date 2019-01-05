@@ -8,6 +8,7 @@ __pycache__/
 vk_likechecker_report_*
 authentication_config*
 authorization_token*
+bin
 
 # C extensions
 *.so

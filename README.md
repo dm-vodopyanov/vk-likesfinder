@@ -7,14 +7,7 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
 
 | Release  | Windows                          | Linux                        | macOS | Documentation |
 | -------- | -------------------------------- | ---------------------------- | ------------- | --- |
-| 1.0.0    | vk_likechecker_cli_win.exe | vk_likechecker_cli_lin | vk_likechecker_cli_mac | README.pdf |
-
-| Release       | 1.0.0                      |
-| ------------- | -------------------------- |
-| Windows       | vk_likechecker_cli_win.exe |
-| Linux         | vk_likechecker_cli_lin     |
-| macOS         | vk_likechecker_cli_mac     |
-| Documentation | README.pdf                 |
+| 1.0.0    | [vk_likechecker_cli_win.exe]()   | [vk_likechecker_cli_lin]()   | [vk_likechecker_cli_mac]() | [README.pdf]() |
 
 
 ## Getting started
