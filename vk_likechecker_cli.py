@@ -157,8 +157,8 @@ class LikeCheckerCli:
         self.vk_likechecker.print('  2. Use browser to generate access token and type it here (PREFERRED)')
         self.vk_likechecker.print('  3. Use browser to create empty VK standalone application, generate service\n'
                                   '     token and type it here (in this case you can\'t access user\'s page if\n'
-                                  '     you and user are friends and page is private for non-friends, and you can\'t\n'
-                                  '     access user\'s groups if they are visible for you)')
+                                  '     you and user are friends and page is private for non-friends, and you\n'
+                                  '     can\'t access user\'s groups if they are visible for you)')
         while True:
             try:
                 authorize_method = eval(input('What would you choose? (press number): '))

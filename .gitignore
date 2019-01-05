@@ -9,6 +9,7 @@ vk_likechecker_report_*
 authentication_config*
 authorization_token*
 bin
+.DS_Store
 
 # C extensions
 *.so
