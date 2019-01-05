@@ -5,27 +5,39 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
 
 **Download the latest VK LikeChecker release [here](https://github.com/dmitryvodop/vk_likechecker/releases).**
 
+| Release  | Windows                          | Linux                        | macOS | Documentation |
+| -------- | -------------------------------- | ---------------------------- | ------------- | --- |
+| 1.0.0    | vk_likechecker_cli_win.exe | vk_likechecker_cli_lin | vk_likechecker_cli_mac | README.pdf |
+
+| Release       | 1.0.0                      |
+| ------------- | -------------------------- |
+| Windows       | vk_likechecker_cli_win.exe |
+| Linux         | vk_likechecker_cli_lin     |
+| macOS         | vk_likechecker_cli_mac     |
+| Documentation | README.pdf                 |
+
+
 ## Getting started
-1. Download vk_likechecker_win.exe (for Windows) or vk_likechecker_lin (for Linux) or 
-vk_likechecker_mac (for macOS) application.
+1. Download ```vk_likechecker_cli_win.exe``` (for Windows) or ```vk_likechecker_cli_lin``` 
+(for Linux) or ```vk_likechecker_cli_mac``` (for macOS) application.
 2. Run the application in command line:
 ```
 vk_likechecker_<PLATFORM>
     --user <user that should be checked; supports 
             short name of page (e.g., durov) or user ID (e.g., 1)> 
-    --interval <Searching interval in hours till now, e.g., 10>
+    --interval <searching interval in hours till now, e.g., 10>
 ```
-where ```<PLATFORM>``` is ```win```, ```lin``` or ```mac```.  
-The full list of options see [here](#supported-command-line-options).
+where ```<PLATFORM>``` is ```win```, ```lin``` or ```mac```.   
 E.g.:
 ```
-vk_likechecker_win.exe --user durov --interval 10
+vk_likechecker_cli_win.exe --user durov --interval 10
 ```
-3. If you did not provide access/serice token through ```--token``` option, or did not create 
+See the full list of [Supported command line options](#supported-command-line-options) for more. 
+3. If you did not provide access/service token through ```--token``` option, or did not create 
 ```authorization_token.txt``` file with the token inside it in the directory with VK LikeChecker
 binary/script, you will be redirected to user-interactive mode, where you can authorize to VK
 using one of three methods (see [Authorization methods](#authorization-methods) for more):
-   1. by providing login/password to VK API (it is not stored anywhere)
+   1. by providing login/password to VK API
    2. by generating access token through your browser
    3. by generating service token for your VK application 
 3. Find the vk_likechecker_report_***.html report in the directory where application was launched.
@@ -33,17 +45,17 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
 
 ## Key features
 1. Cross-platform, supports Windows, Linux and macOS.
-2. Checks selected user's likes in his public pages and groups and at his friends
+2. Check selected user's likes on his friends, public and group pages
 3. Customize the list of public pages, groups and friends:
    1. skip some pages,
    2. add pages, selected user doesn't subscribed or people he is not friends with
 4. Select the searching interval in hours
-5. Clear and useful authorization process to VK API
+5. Clear and useful authorization process to VK API: for more see [Authorization methods](#authorization-methods)
 6. Different report formats: for more see [Reports](#reports)
 
 
 ## Authorization methods
-If you did not provide access/serice token through ```--token``` option, or did not create 
+If you did not provide access/service token through ```--token``` option, or did not create 
 ```authorization_token.txt``` file with the token inside it in the directory with VK LikeChecker
 binary/script, you will be redirected to the following user-interactive mode:
 ```
@@ -91,8 +103,13 @@ Enter access token here: _
 After that ```authorization_token.txt``` file with the token inside it in the directory with 
 VK LikeChecker binary/script will be created and you don't need to generate your access token 
 again. If you need to create another token, remove ```authorization_token.txt``` file.  
+
 **Note:** the following browsers are supported only (each should be installed to default 
-directory): Chrome on Windows, Firefox on Linux and Safari on macOS.
+directory): Chrome on Windows, Firefox on Linux and Safari on macOS.  
+If the browser failed to open automatically, open it manually and go to this link:  
+```
+https://oauth.vk.com/authorize?client_id=6456882&redirect_uri=https://vk.com&v=5.92&response_type=token&scope=friends,groups,offline
+```
 
 ### (3) Service token
 ```

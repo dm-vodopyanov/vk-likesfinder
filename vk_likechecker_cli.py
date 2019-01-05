@@ -178,17 +178,17 @@ class LikeCheckerCli:
             browser_location = {'default': {'windows': 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s',
                                             'linux': '/usr/bin/firefox %s',
                                             'mac': 'open -a /Applications/Safari.app %s'}}
+
+            link = 'https://oauth.vk.com/authorize?client_id={client_id}&redirect_uri=https://vk.com&v=5.92&' \
+                   'response_type=token&scope={scope}'.format(client_id=self.vk_likechecker.get_app_id(),
+                                                              scope='friends,groups,offline')
             try:
                 webbrowser.get(browser_location.get('default').get(self.get_platform_name()))
-
-                webbrowser.open('https://oauth.vk.com/authorize?client_id={client_id}&'
-                                'redirect_uri=https://vk.com&'
-                                'v=5.92&'
-                                'response_type=token&'
-                                'scope={scope}'.format(client_id=self.vk_likechecker.get_app_id(),
-                                                       scope='friends,groups,offline'))
-            except:
-                raise VkLikeCheckerCliException('Failed to open browser. Please check documentation.')
+                webbrowser.open(link)
+            except webbrowser.Error:
+                self.vk_likechecker.print('ERROR: Failed to open browser.')
+                self.vk_likechecker.print('Please open your browser manually and follow this link:')
+                self.vk_likechecker.print(link)
 
             self.vk_likechecker.print('After logging in to VK and granting the access to the VK LikeChecker app, you\n'
                                       'need to copy access_token from address bar and paste it below.')
