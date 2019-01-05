@@ -164,7 +164,7 @@ Check 125/125
 14 like(s) were found.
 ```
 
-## Python list
+### Python list
 If you Python developer, you can call ```get_liked_public_pages_posts(...)``` and/or 
 ```get_liked_groups_posts(...)``` and/or ```get_liked_people_posts(...)``` from 
 ```VkLikeChecker``` class in src/vk_likechecker.py. 
@@ -189,7 +189,7 @@ The following will return:
 [ ['Павел Дуров', 'https://vk.com/wall1_2442097'] ]
 ```
 
-### Supported command line options
+## Supported command line options
 ```
 usage: vk_likechecker_cli_*** [-h] [-to TOKEN] [-at AUTHORIZATION_TOKEN] -us
                               USER -in INTERVAL [-pp PUBLIC_PAGES]
