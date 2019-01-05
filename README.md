@@ -205,7 +205,7 @@ optional arguments:
                         login/password, don't mention this option, the
                         application will suggest you how you can authorize to
                         VK in user-interactive mode
-  -at AUTHORIZATION_TOKEN, --authorization_token AUTHORIZATION_TOKEN
+  -at AUTHORIZATION_TOKEN_FILE, --authorization_token_file AUTHORIZATION_TOKEN_FILE
                         Path to text file with your access/service token for
                         accessing VK. Follow documentation to see how it
                         should be organized. Paste a token to it, and it will

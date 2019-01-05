@@ -37,7 +37,7 @@ class LikeCheckerCli:
         args = self.create_parser().parse_args()
 
         self.vk_likechecker = VkLikeChecker()
-        self.vk_likechecker.set_authorization_token_file(args.authorization_token)
+        self.vk_likechecker.set_authorization_token_file(args.authorization_token_file)
         self.vk_likechecker.set_token(args.token)
         self.vk_likechecker.set_user(args.user)
         self.vk_likechecker.set_interval(args.interval)
@@ -61,7 +61,7 @@ class LikeCheckerCli:
                                  'application will suggest you how you can authorize to\n'
                                  'VK in user-interactive mode')
         authorization_token_file = os.path.join(self.location, 'authorization_token.txt')
-        parser.add_argument('-at', '--authorization_token', required=False,
+        parser.add_argument('-at', '--authorization_token_file', required=False,
                             default=authorization_token_file,
                             help='Path to text file with your access/service token for\n'
                                  'accessing VK. Follow documentation to see how it\n'
