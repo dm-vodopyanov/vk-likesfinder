@@ -8,7 +8,7 @@ layout: default
 * [Getting started](#getting-started)
 * [Key features](#key-features)
 * [Authorization methods](#authorization-methods)
-  * [(1) Login/password](#1-login-password)
+  * [(1) Login/password](#1-loginpassword)
   * [(2) Access token](#2-access-token)
   * [(3) Service token](#3-service-token)
 * [Customize the list of public pages, groups and friends](#customize-the-list-of-public-pages-groups-and-friends)
@@ -40,7 +40,7 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
    3. by generating service token for your VK application 
 4. Find the vk-likechecker-report-***.html report in the directory where application was launched.  
 
-[Back to top](#contents)
+[Back to top](#)
 
 ## Key features
 1. Cross-platform, supports Windows, Linux and macOS.
@@ -53,7 +53,7 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
 5. Clear and handy authorization process to VK API: for more see [Authorization methods](#authorization-methods)
 6. Different report formats: for more see [Reports](#reports)
 
-[Back to top](#contents)
+[Back to top](#)
 
 ## Authorization methods
 If you did not provide access/service token through ```--token``` option, or did not create 
@@ -73,7 +73,7 @@ What would you choose? (press number): _
 ```
 Let's look at the each of methods more deeply.  
 
-[Back to top](#contents)
+[Back to top](#)
 
 ### (1) Login/password
 ```
@@ -84,7 +84,7 @@ Password: ********************
 You need to provide your VK login and password to VK API. Login and password is not stored anywhere - 
 you need to provide them each time you run VK LikeChecker.
 
-[Back to top](#contents)
+[Back to top](#)
 
 ### (2) Access token
 ```
@@ -116,7 +116,7 @@ If the browser failed to open automatically, open it manually and go to this lin
 https://oauth.vk.com/authorize?client_id=6456882&redirect_uri=https://vk.com&v=5.92&response_type=token&scope=friends,groups,offline
 ```
 
-[Back to top](#contents)
+[Back to top](#)
 
 ### (3) Service token
 ```
@@ -131,7 +131,7 @@ Enter service token here: _
 ```
 *(experimental, not for production use)*
 
-[Back to top](#contents)
+[Back to top](#)
 
 ## Customize the list of public pages, groups and friends
 You can customize the lists of public pages, groups and people in which you want to find selected 
@@ -191,19 +191,19 @@ E.g.,
 In this case checking of groups and people will be skipped, and only public pages, except 
 https://vk.com/leprum, will be checked.
 
-[Back to top](#contents)
+[Back to top](#)
 
 ## Reports
 VK LikeChecker supports reports in the following formats: HTML, command line and Python list.
 
-[Back to top](#contents)
+[Back to top](#)
 
 ### HTML
 The similar report will be generated in the directory where application was launched:  
 
 ![Report example](https://raw.githubusercontent.com/dmitryvodop/vk-likechecker/master/images/report_example.png)
 
-[Back to top](#contents)
+[Back to top](#)
 
 ### Command line
 
@@ -254,7 +254,7 @@ Check 125/125
 14 like(s) were found.
 ```
 
-[Back to top](#contents)
+[Back to top](#)
 
 ### Python list
 If you Python developer, you can call ```get_liked_public_pages_posts(...)``` and/or 
@@ -281,7 +281,7 @@ The following will return:
 [ ['Павел Дуров', 'https://vk.com/wall1_2442097'] ]
 ```
 
-[Back to top](#contents)
+[Back to top](#)
 
 ## Supported command line options
 ```
@@ -384,4 +384,4 @@ optional arguments:
   -v, --version         Show VK LikeChecker version and exit
 ```
 
-[Back to top](#contents)
+[Back to top](#)
