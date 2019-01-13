@@ -3,11 +3,9 @@ title: Download
 layout: default
 ---
 
-# {{ page.title }}
-
 ## Download the latest version:
-#### [Download VK LikeChecker 1.0.0]()
+:point_right: **[Download VK LikeChecker 1.0.0](https://dmitryvodop.github.io/vk-likechecker/download/1-0-0)**
 
-| Release version      | Release date |              | Documentation |
-| -------------------- | ------------ | ------------ | ------------- |
-| VK LikeChecker 1.0.0 | 2019-01-05   | [Download]() | [README.pdf]()|
+| Release version | Release date |     | Documentation |
+| --------------- | ------------ | --- | ------------- |
+| VK LikeChecker 1.0.0 | 2019-01-05 | [Download](https://dmitryvodop.github.io/vk-likechecker/download/1-0-0) | [README (pdf)](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-readme.pdf) |
