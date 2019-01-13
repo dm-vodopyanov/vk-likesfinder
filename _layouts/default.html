@@ -20,8 +20,10 @@
       <a href="{{ '/download' | relative_url }}" class="btn{% if page.name == 'download.md' %} active{% endif %}">Download</a>
       <a href="{{ '/download' | relative_url }}" class="btn{% if page.name == 'documentation.md' %} active{% endif %}">Documentation</a>
       <a href="https://github.com/dmitryvodop/vk_likechecker" class="btn">GitHub</a>
+      {% if site.show_downloads %}
         <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
         <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
+      {% endif %}
     </section>
 
     <section class="main-content">
