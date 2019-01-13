@@ -16,7 +16,7 @@ from src.vk_likechecker import VkLikeChecker
 from src.vk_likechecker import MAX_CONSOLE_LINE_LENGTH
 from src.vk_likechecker import DEFAULT
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 class DefaultHelpParser(argparse.ArgumentParser):

@@ -106,7 +106,7 @@ class VkLikeChecker:
     def set_earliest_time(self):
         if not self.interval:
             raise VkLikeCheckerException('Searching interval is empty')
-        self.earliest_time = int(time.time()) - int(self.interval) * 3600
+        self.earliest_time = int(datetime.datetime.today().timestamp()) - int(self.interval) * 3600
 
     @staticmethod
     def print(string='', length=MAX_CONSOLE_LINE_LENGTH, end='\n'):
@@ -165,11 +165,14 @@ class VkLikeChecker:
                 'https://vk.com/id{}'.format(self.vk_api_wrapper.user_id), checking_user))
 
         # print selected searching interval
+        earliest_time_formatted = datetime.datetime.fromtimestamp(self.earliest_time)
         if stdout_on:
-            self.print('Searching interval: {} hour(s) till now'.format(self.interval))
+            self.print('Searching interval: {} hour(s) till now (since {})'.format(self.interval,
+                                                                                   earliest_time_formatted))
             self.print()
         if html_report_on:
-            self.html_report.write('<b>Searching interval:</b> {} hour(s) till now<br><br>\n'.format(self.interval))
+            self.html_report.write('<b>Searching interval:</b> {} hour(s) till now '
+                                   '(since {})<br><br>\n'.format(self.interval, earliest_time_formatted))
 
     def show_likes_count(self, html_report_on=True, stdout_on=False):
         if not self.html_report.file and html_report_on:
@@ -433,7 +436,6 @@ class VkLikeChecker:
         if item_type in [PUBLIC_PAGES, GROUPS]:
             return self.vk_api_wrapper.get_public_page_or_group_page_info(item)
         elif item_type in [PEOPLE]:
-            time.sleep(0.25)
             return self.vk_api_wrapper.get_person_page_info(item)
         else:
             return None

@@ -21,7 +21,7 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
    ```<USER>``` is person that should to be checked; supports short name of page (e.g., durov) 
    or user ID (e.g., 1),  
    ```<INTERVAL>``` is searching interval in hours till now, e.g., 10.   
-   E.g.: **```vk-likechecker-1.0.0-cli-win.exe --user durov --interval 10```**  
+   E.g.: **```vk-likechecker-1.0.1-cli-win.exe --user durov --interval 10```**  
    See the full list of [Supported command line options](#supported-command-line-options) for more.
 3. If you did not provide access/service token through ```--token``` option, or did not create 
 ```authorization_token.txt``` file with the token inside it in the directory with VK LikeChecker
@@ -184,9 +184,9 @@ The similar report will be generated in the directory where application was laun
 ### Command line
 
 ```
-root@ubuntu:~$ vk-likechecker-1.0.0-cli-lin --user *** --interval 100
+root@ubuntu:~$ vk-likechecker-1.0.1-cli-lin --user *** --interval 100
 ===============================================================================
-VK LikeChecker 1.0.0
+VK LikeChecker 1.0.1
 ===============================================================================
 
 HTML report created: 
@@ -196,7 +196,7 @@ Authorized to VK successfully.
 VK API initialized successfully.
 
 Checking user: Name Surname
-Searching interval: 100 hour(s) till now
+Searching interval: 100 hour(s) till now (since 2019-01-09 13:58:00)
 
 Check 43 public pages...
 Пикабу
