@@ -3,8 +3,10 @@ title: Download
 layout: default
 ---
 
-## Download the latest version:
+## Download the latest version
 :point_right: **[Download VK LikeChecker 1.0.0](https://dmitryvodop.github.io/vk-likechecker/download/1-0-0)**
+
+## All releases
 
 | Release version | Release date |     | Documentation |
 | --------------- | ------------ | --- | ------------- |
