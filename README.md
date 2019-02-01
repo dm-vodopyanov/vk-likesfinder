@@ -1,36 +1,36 @@
-# VK LikeChecker
+# VK LikesFinder
 
-VK LikeChecker is a command line tool which provides you to check which posts any VK user liked. It is written on 
+VK LikesFinder is a command line tool which provides you to check which posts any VK user liked. It is written on 
 Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) module. 
 
-**Download the latest VK LikeChecker release [here](https://github.com/dmitryvodop/vk_likechecker/releases).**
+**Download the latest VK LikesFinder release [here](https://github.com/dmitryvodop/vk_likesfinder/releases).**
 
 | Release  | Windows  | Linux  | macOS  | Docs  |
 | -------- | -------- | ------ | ------ | ----- |
-| 1.0.0    | [vk-likechecker-1.0.0-cli-win.exe](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-cli-win.exe) | [vk-likechecker-1.0.0-cli-lin](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-cli-lin) | [vk-likechecker-1.0.0-cli-mac](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-cli-mac) | [vk-likechecker-1.0.0-readme.pdf](https://github.com/dmitryvodop/vk-likechecker/releases/download/1.0.0/vk-likechecker-1.0.0-readme.pdf) |
+| 1.0.0    | [vk-likesfinder-1.0.0-cli-win.exe](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-win.exe) | [vk-likesfinder-1.0.0-cli-lin](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-lin) | [vk-likesfinder-1.0.0-cli-mac](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-mac) | [vk-likesfinder-1.0.0-readme.pdf](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-readme.pdf) |
 
 
 ## Getting started
-1. Download ```vk-likechecker-<VERSION>-cli-win.exe``` (for Windows) or ```vk-likechecker-<VERSION>-cli-lin``` 
-(for Linux) or ```vk-likechecker-<VERSION>-cli-mac``` (for macOS) application.
+1. Download ```vk-likesfinder-<VERSION>-cli-win.exe``` (for Windows) or ```vk-likesfinder-<VERSION>-cli-lin``` 
+(for Linux) or ```vk-likesfinder-<VERSION>-cli-mac``` (for macOS) application.
 2. Run the application in command line:  
-    ```vk-likechecker-<VERSION>-cli-<PLATFORM> --user <USER> --interval <INTERVAL>```,    
+    ```vk-likesfinder-<VERSION>-cli-<PLATFORM> --user <USER> --interval <INTERVAL>```,    
    where  
-   ```<VERSION>``` is the version of VK LikeChecker you use,  
+   ```<VERSION>``` is the version of VK LikesFinder you use,  
    ```<PLATFORM>``` is ```win```, ```lin``` or ```mac```,  
    ```<USER>``` is person that should to be checked; supports short name of page (e.g., durov) 
    or user ID (e.g., 1),  
    ```<INTERVAL>``` is searching interval in hours till now, e.g., 10.   
-   E.g.: **```vk-likechecker-1.0.1-cli-win.exe --user durov --interval 10```**  
+   E.g.: **```vk-likesfinder-1.0.1-cli-win.exe --user durov --interval 10```**  
    See the full list of [Supported command line options](#supported-command-line-options) for more.
 3. If you did not provide access/service token through ```--token``` option, or did not create 
-```authorization_token.txt``` file with the token inside it in the directory with VK LikeChecker
+```authorization_token.txt``` file with the token inside it in the directory with VK LikesFinder
 binary/script, you will be redirected to user-interactive mode, where you can authorize to VK
 using one of three methods (see [Authorization methods](#authorization-methods) for more):
    1. by providing login/password to VK API
    2. by generating access token through your browser
    3. by generating service token for your VK application 
-4. Find the vk-likechecker-report-***.html report in the directory where application was launched.
+4. Find the vk-likesfinder-report-***.html report in the directory where application was launched.
 
 
 ## Key features
@@ -47,7 +47,7 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
 
 ## Authorization methods
 If you did not provide access/service token through ```--token``` option, or did not create 
-```authorization_token.txt``` file with the token inside it in the directory with VK LikeChecker
+```authorization_token.txt``` file with the token inside it in the directory with VK LikesFinder
 binary/script, you will be redirected to the following user-interactive mode:
 ```
 You are not authorized to access VK.
@@ -70,18 +70,18 @@ Login: example@example.com
 Password: ********************
 ```
 You need to provide your VK login and password to VK API. Login and password is not stored anywhere - 
-you need to provide them each time you run VK LikeChecker.
+you need to provide them each time you run VK LikesFinder.
 
 ### (2) Access token
 ```
 What would you choose? (press number): 2
 Opening a browser...
-After logging in to VK and granting the access to the VK LikeChecker app, you
+After logging in to VK and granting the access to the VK LikesFinder app, you
 need to copy access_token from address bar and paste it below.
 Enter access token here: _
 ```
 This method provides you to create your own access token - the unique character set. You will be 
-re-directed to oauth.vk.com, where you need to log in and grant the access to VK LikeChecker app. 
+re-directed to oauth.vk.com, where you need to log in and grant the access to VK LikesFinder app. 
 After that you will be re-directed to the blank page. It will have the following address in 
 address bar:
 ```
@@ -92,7 +92,7 @@ You need to copy ```<ACCESS_TOKEN>``` and paste it to the app:
 Enter access token here: _
 ```
 After that ```authorization_token.txt``` file with the token inside it in the directory with 
-VK LikeChecker binary/script will be created and you don't need to generate your access token 
+VK LikesFinder binary/script will be created and you don't need to generate your access token 
 again. If you need to create another token, remove ```authorization_token.txt``` file.  
 
 **Note:** the following browsers are supported only (each should be installed to default 
@@ -105,7 +105,7 @@ https://oauth.vk.com/authorize?client_id=6456882&redirect_uri=https://vk.com&v=5
 ### (3) Service token
 ```
 Create an Application on VK (see link below). Type anything to Title section,
-e.g., VK LikeChecker, choose Platform as Standalone Application and press
+e.g., VK LikesFinder, choose Platform as Standalone Application and press
 Connect Application button. When press Save button. Go to Settings and copy
 service_token and paste it below.
 
@@ -174,23 +174,23 @@ In this case checking of groups and people will be skipped, and only public page
 https://vk.com/leprum, will be checked.
 
 ## Reports
-VK LikeChecker supports reports in the following formats: HTML, command line and Python list.
+VK LikesFinder supports reports in the following formats: HTML, command line and Python list.
 
 ### HTML
 The similar report will be generated in the directory where application was launched:  
 
-![Report example](https://raw.githubusercontent.com/dmitryvodop/vk-likechecker/master/images/report_example.png)
+![Report example](https://raw.githubusercontent.com/dmitryvodop/vk-likesfinder/master/images/report_example.png)
 
 ### Command line
 
 ```
-root@ubuntu:~$ vk-likechecker-1.0.1-cli-lin --user *** --interval 100
+root@ubuntu:~$ vk-likesfinder-1.0.1-cli-lin --user *** --interval 100
 ===============================================================================
-VK LikeChecker 1.0.1
+VK LikesFinder 1.0.1
 ===============================================================================
 
 HTML report created: 
-    C:\vk_likechecker\vk_likechecker_report_user_2018-12-22_02.55.59.011944.html
+    C:\vk_likesfinder\vk_likesfinder_report_user_2018-12-22_02.55.59.011944.html
 
 Authorized to VK successfully.
 VK API initialized successfully.
@@ -233,7 +233,7 @@ Check 125/125
 ### Python list
 If you Python developer, you can call ```get_liked_public_pages_posts(...)``` and/or 
 ```get_liked_groups_posts(...)``` and/or ```get_liked_people_posts(...)``` from 
-```VkLikeChecker``` class in src/vk_likechecker.py. 
+```VkLikesFinder``` class in src/vk_likesfinder.py. 
 The following will return:
 ```
 [ ['Пикабу', 'https://vk.com/wall-31480508_387695'],
@@ -257,11 +257,11 @@ The following will return:
 
 ## Supported command line options
 ```
-usage: vk-likechecker-cli-*** [-h] [-to TOKEN] [-at AUTHORIZATION_TOKEN_FILE]
+usage: vk-likesfinder-cli-*** [-h] [-to TOKEN] [-at AUTHORIZATION_TOKEN_FILE]
                               -us USER -in INTERVAL [-pp PUBLIC_PAGES]
                               [-gr GROUPS] [-pe PEOPLE] [-hr HTML_REPORT] [-v]
 
-VK LikeChecker
+VK LikesFinder
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -351,7 +351,7 @@ optional arguments:
                            pass "none".
   -hr HTML_REPORT, --html_report HTML_REPORT
                         Custom path to HTML report (by default it generates in
-                        the folder where VK LikeChecker binary/script is
+                        the folder where VK LikesFinder binary/script is
                         located)
-  -v, --version         Show VK LikeChecker version and exit
+  -v, --version         Show VK LikesFinder version and exit
 ```

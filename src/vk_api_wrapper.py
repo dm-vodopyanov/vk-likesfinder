@@ -71,6 +71,14 @@ class VkApiWrapper:
         time.sleep(DELAY)
         return self.api.users.get(user_ids=self.user_id)[0]['last_name']
 
+    def get_user_avatar_small(self):
+        if not self.api:
+            raise VkApiWrapperException('VK API is not initialized')
+        if not self.user_id:
+            raise VkApiWrapperException('User ID is not initialized')
+        time.sleep(DELAY)
+        return self.api.users.get(user_ids=self.user_id, fields='photo_50')[0]['photo_50']
+
     def get_user_public_pages(self):
         if not self.api:
             raise VkApiWrapperException('VK API is not initialized')

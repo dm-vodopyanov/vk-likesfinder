@@ -3,8 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# VK LikeChecker
+# VK LikesFinder
 .idea
+vk-likesfinder-report-*
 vk_likechecker_report_*
 vk-likechecker-report-*
 authentication_config*
