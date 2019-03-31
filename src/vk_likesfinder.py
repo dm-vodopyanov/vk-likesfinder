@@ -205,7 +205,7 @@ class VkLikesFinder:
         try:
             groups = self._parse_selected_pages(self.groups, GROUPS)
         except VkAPIError as ex:
-            self.cli_report.print('Check groups...')
+            self.cli_report.print(locale[28][lang])
             self.cli_report.print('{}\n  {message}\n'.format(locale[16][lang], message=ex.message))
             return []
 
@@ -272,11 +272,10 @@ class VkLikesFinder:
                             break
 
                     if not can_skip:
-                        self.cli_report.print('WARNING: can\'t skip {} as it is not in the default set '
-                                              'of {}'.format(item, item_type))
+                        self.cli_report.print(locale[29][lang].format(item, item_type))
                     # TODO: add skipping persons for public pages here
                 except VkAPIError:
-                    self.cli_report.print('WARNING: {} is invalid {}'.format(item, item_type))
+                    self.cli_report.print(locale[30][lang].format(item, item_type))
             else:
                 try:
                     page = self._get_item_page_info(item, item_type)
@@ -293,21 +292,21 @@ class VkLikesFinder:
                     if not is_duplicate:
                         pages.extend(page)
                     else:
-                        self.cli_report.print('WARNING: {} already in the default set of {}'.format(item, item_type))
+                        self.cli_report.print(locale[29][lang].format(item, item_type))
                 except VkAPIError:
-                    self.cli_report.print('WARNING: {} is invalid {}'.format(item, item_type))
+                    self.cli_report.print(locale[30][lang].format(item, item_type))
         return pages
 
     def _get_liked_posts(self, source, item_type):
         if not self.vk_api_wrapper:
-            raise VkLikesFinderException('VK API is not initialized')
+            raise VkLikesFinderException(locale[10][lang])
         if not self.earliest_time:
-            raise VkLikesFinderException('Earliest time is not calculated')
+            raise VkLikesFinderException(locale[31][lang])
         if not self.html_report.file and self.html_report.is_initialized:
-            raise VkLikesFinderException('HTML report is not initialized')
+            raise VkLikesFinderException(locale[11][lang])
 
-        self.cli_report.print('Check {} {}...'.format(len(source), item_type))
-        self.html_report.write('<br><b>Check {} {}...</b><br><br>\n'.format(len(source), item_type))
+        self.cli_report.print(locale[32][lang].format(len(source), item_type))
+        self.html_report.write('<br><b>{}</b><br><br>\n'.format(locale[32][lang].format(len(source), item_type)))
         result = []
         item_counter = 0
         for item in source:
@@ -330,7 +329,7 @@ class VkLikesFinder:
                             break
                         except requests.exceptions.RequestException:
                             time.sleep(15)
-                            self.cli_report.print('WARNING: Read timed out. Re-initialize VK API...')
+                            self.cli_report.print(locale[25][lang])
                             self.initialize_vk_api()
 
                     if not posts['items']:
@@ -339,7 +338,7 @@ class VkLikesFinder:
                     is_some_post_older_earliest_time = False
 
                     for post in posts['items']:
-                        status = 'Check {}/{}: {}'.format(item_counter, len(source), name)
+                        status = locale[33][lang].format(item_counter, len(source), name)
                         self.cli_report.print(status, end='\r')
                         if post['date'] >= self.earliest_time:
                             likes_offset = 0
@@ -351,7 +350,7 @@ class VkLikesFinder:
                                         break
                                     except requests.exceptions.RequestException:
                                         time.sleep(15)
-                                        self.cli_report.print('WARNING: Read timed out. Re-initialize VK API...')
+                                        self.cli_report.print(locale[25][lang])
                                         self.initialize_vk_api()
 
                                 if not likes['items']:
@@ -390,9 +389,9 @@ class VkLikesFinder:
             except VkAPIError:
                 pass
 
-        scan_completed = 'Check {} {}... completed.'.format(len(source), item_type)
+        scan_completed = locale[34][lang].format(len(source), item_type)
         if not len(result):
-            scan_completed += ' Nothing found.'
+            scan_completed += locale[27][lang]
         self.cli_report.print(scan_completed, end='\r')
         self.cli_report.print()
         return result

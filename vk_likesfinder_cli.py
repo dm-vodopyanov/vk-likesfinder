@@ -22,7 +22,7 @@ __version__ = '2.0.0'
 
 class DefaultHelpParser(argparse.ArgumentParser):
     def error(self, message):
-        sys.stderr.write('ERROR: %s\n' % message)
+        sys.stderr.write(locale[37][lang] % message)
         self.print_help()
         sys.exit(-2)
 
@@ -57,41 +57,28 @@ class LikesFinderCli:
         self.exit_code = 0
 
     def launch_interactive_mode(self):
-        self.vk_likesfinder.cli_report.print('Hello! Do you want to find the likes of some VK user? '
-                                             'There are two steps:\n')
-        user = input('1. Enter short name or ID of the user (e.g., durov or 1): ')
-        interval = input('2. Specify searching interval in hours (e.g., 10): ')
-        self.vk_likesfinder.cli_report.print('\nNOTE: use command line options to customize the search. E.g., include '
-                                             '\nor filter some public pages, groups or people.\n')
+        self.vk_likesfinder.cli_report.print(locale[38][lang])
+        user = input(locale[39][lang])
+        interval = input(locale[40][lang])
+        self.vk_likesfinder.cli_report.print(locale[41][lang])
         sys.argv = ['', '-us', user, '-in', interval]
 
     def create_parser(self):
         current_system = self.get_platform_name()[:3]
-        parser = DefaultHelpParser(prog='vk-likesfinder-{}-cli-{}'.format(__version__, current_system),
+        parser = DefaultHelpParser(prog='vk-likesfinder-{}-{}-cli-{}'.format(__version__, locale[42][lang],
+                                                                             current_system),
                                    description='VK LikesFinder {}{}'.format(__version__, locale[18][lang]),
                                    formatter_class=argparse.RawTextHelpFormatter, add_help=True)
         parser.add_argument('-to', '--token', required=False, default=None,
-                            help='Your access/service token. It needs for authorization\n'
-                                 'to VK. If you need to obtain token or use your\n'
-                                 'login/password, don\'t mention this option, the\n'
-                                 'application will suggest you how you can authorize to\n'
-                                 'VK in user-interactive mode')
+                            help=locale[43][lang])
         authorization_token_file = os.path.join(self.location, 'authorization_token.txt')
         parser.add_argument('-at', '--authorization_token_file', required=False,
                             default=authorization_token_file,
-                            help='Path to text file with your access/service token for\n'
-                                 'accessing VK. Follow documentation to see how it\n'
-                                 'should be organized. Paste a token to it, and it will\n'
-                                 'be automatically used on authorization step. If you\n'
-                                 'need to obtain token, you will be moved to\n'
-                                 'user-interactive mode. After that\n'
-                                 '{}\n'
-                                 'will be created automatically, and you won\'t need to\n'
-                                 'obtain your token again.'.format(authorization_token_file))
+                            help=locale[44][lang].format(authorization_token_file))
         parser.add_argument('-us', '--user', required=True, default=None,
-                            help='Short name or ID of checked user')
+                            help=locale[45][lang])
         parser.add_argument('-in', '--interval', required=True, default=None,
-                            help='Searching interval in hours')
+                            help=locale[46][lang])
         parser.add_argument('-pp', '--public_pages', required=False, default=DEFAULT,
                             help='A list of public pages, in which likes will be\n'
                                  'searched.\n'
