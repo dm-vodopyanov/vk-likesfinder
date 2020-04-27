@@ -5,8 +5,7 @@ import argparse
 import sys
 import os
 
-from vk_requests.exceptions import VkAPIError
-from vk_requests.exceptions import VkAuthError
+from vk_api.exceptions import VkApiError
 from src.vk_likesfinder import VkLikesFinderException
 from src.vk_api_wrapper import VkApiWrapperException
 from src.html_report import HtmlReportException
@@ -15,14 +14,13 @@ from src.getpass_cross_platform import getpass
 from src.vk_likesfinder import VkLikesFinder
 from src.vk_likesfinder import DEFAULT
 from src.cli_report import MAX_CONSOLE_LINE_LENGTH
-from src.locale import locale, lang
 
 __version__ = '2.0.0'
 
 
 class DefaultHelpParser(argparse.ArgumentParser):
     def error(self, message):
-        sys.stderr.write(locale[37][lang] % message)
+        sys.stderr.write('ERROR: %s\n' % message)
         self.print_help()
         sys.exit(-2)
 
@@ -44,6 +42,7 @@ class LikesFinderCli:
             self.print_header_cli()
             self.launch_interactive_mode()
         args = self.create_parser().parse_args()
+        self.friends_list = args.friends_list
         self.vk_likesfinder.set_authorization_token_file(args.authorization_token_file)
         self.vk_likesfinder.set_token(args.token)
         self.vk_likesfinder.set_user(args.user)
@@ -57,29 +56,44 @@ class LikesFinderCli:
         self.exit_code = 0
 
     def launch_interactive_mode(self):
-        self.vk_likesfinder.cli_report.print(locale[38][lang])
-        user = input(locale[39][lang])
-        interval = input(locale[40][lang])
-        self.vk_likesfinder.cli_report.print(locale[41][lang])
+        self.vk_likesfinder.cli_report.print('Hello! Do you want to find the likes of some VK user? There are two '
+                                             'steps:\n')
+        user = input('1. Enter short name or ID of the user (e.g., durov or 1): ')
+        interval = input('2. Specify searching interval in hours (e.g., 10): ')
+        self.vk_likesfinder.cli_report.print('\nNOTE: use command line options to customize the search. E.g., '
+                                             'include \nor filter some public pages, groups or people.\n')
         sys.argv = ['', '-us', user, '-in', interval]
 
     def create_parser(self):
         current_system = self.get_platform_name()[:3]
-        parser = DefaultHelpParser(prog='vk-likesfinder-{}-{}-cli-{}'.format(__version__, locale[42][lang],
-                                                                             current_system),
-                                   description='VK LikesFinder {}{}'.format(__version__, locale[18][lang]),
+        parser = DefaultHelpParser(prog='vk-likesfinder-{}-cli-{}'.format(__version__, current_system),
+                                   description='VK LikesFinder {}'.format(__version__),
                                    formatter_class=argparse.RawTextHelpFormatter, add_help=True)
         parser.add_argument('-to', '--token', required=False, default=None,
-                            help=locale[43][lang])
+                            help='Your access/service token. It needs for authorization\n'
+                                 'to VK. If you need to obtain a token or want to use\n'
+                                 'your login/password, don\'t mention this option, the\n'
+                                 'application will suggest you how you can authorize to\n'
+                                 'VK in user-interactive mode')
         authorization_token_file = os.path.join(self.location, 'authorization_token.txt')
-        parser.add_argument('-at', '--authorization_token_file', required=False,
+        parser.add_argument('-at', '--authorization-token-file', required=False,
                             default=authorization_token_file,
-                            help=locale[44][lang].format(authorization_token_file))
+                            help='Path to text file with your access/service token for\n'
+                                 'accessing VK. Follow documentation to see how it\n'
+                                 'should be organized. Paste a token to it, and it will\n'
+                                 'be automatically used on authorization step. If you\n'
+                                 'need to obtain token, you will be moved to\n'
+                                 'user-interactive mode. After that\n'
+                                 '{}\n'
+                                 'will be created automatically, and you won\'t need to\n'
+                                 'obtain your token again.'.format(authorization_token_file))
         parser.add_argument('-us', '--user', required=True, default=None,
-                            help=locale[45][lang])
+                            help='Short name or ID of selected user')
+        parser.add_argument('-fl', '--friends-list', required=False, action='store_true',
+                            help='Generate friends list of selected user')
         parser.add_argument('-in', '--interval', required=True, default=None,
-                            help=locale[46][lang])
-        parser.add_argument('-pp', '--public_pages', required=False, default=DEFAULT,
+                            help='Searching interval in hours till now')
+        parser.add_argument('-pp', '--public-pages', required=False, default=DEFAULT,
                             help='A list of public pages, in which likes will be\n'
                                  'searched.\n'
                                  '1. It\'s "all" by default. It means that all\n'
@@ -143,7 +157,7 @@ class LikesFinderCli:
                                  '   short names "person_1" and "person_2".\n'
                                  '5. If you want to completely skip checking of people,\n'
                                  '   pass "none".')
-        parser.add_argument('-hr', '--html_report', required=False, default=None,
+        parser.add_argument('-hr', '--html-report', required=False, default=None,
                             help='Custom path to HTML report (by default it generates in\n'
                                  'the folder where VK LikesFinder binary/script is\n'
                                  'located)')
@@ -164,7 +178,7 @@ class LikesFinderCli:
     def obtain_token(self):
         self.vk_likesfinder.cli_report.print('You are not authorized to access VK.')
         self.vk_likesfinder.cli_report.print()
-        self.vk_likesfinder.cli_report.print('You can authorize to VK in the 3 ways:')
+        self.vk_likesfinder.cli_report.print('You can authorize to VK in 3 ways:')
         self.vk_likesfinder.cli_report.print('  1. Enter login and password')
         self.vk_likesfinder.cli_report.print('  2. Use browser to generate access token and type it here (PREFERRED)')
         self.vk_likesfinder.cli_report.print('  3. Use browser to create empty VK standalone application, generate '
@@ -176,7 +190,7 @@ class LikesFinderCli:
                                              '     can\'t access user\'s groups if they are visible for you)')
         while True:
             try:
-                authorize_method = eval(input('What would you choose? (press number): '))
+                authorize_method = eval(input('What do you choose? (press number): '))
                 if authorize_method not in [1, 2, 3]:
                     raise VkLikesFinderCliException
                 break
@@ -241,27 +255,35 @@ class LikesFinderCli:
             if not self.interactive_mode:
                 self.print_header_cli()
 
-            self.vk_likesfinder.initialize_html_report()
             if not self.vk_likesfinder.token:
                 self.obtain_token()
             self.vk_likesfinder.initialize_vk_api()
-            self.vk_likesfinder.show_basic_info()
 
-            self.vk_likesfinder.get_liked_public_pages_posts()
-            self.vk_likesfinder.get_liked_groups_posts()
-            self.vk_likesfinder.get_liked_people_posts()
+            self.vk_likesfinder.show_basic_info_cli()
 
-            self.vk_likesfinder.show_likes_count()
+            # generate friends list
+            if self.friends_list:
+                self.vk_likesfinder.generate_friends_list()
+
+            else:
+                self.vk_likesfinder.show_extended_info_cli()
+
+                self.vk_likesfinder.initialize_html_report()
+                self.vk_likesfinder.show_basic_info_html()
+                self.vk_likesfinder.show_extended_info_html()
+
+                self.vk_likesfinder.get_liked_public_pages_posts()
+                self.vk_likesfinder.get_liked_groups_posts()
+                self.vk_likesfinder.get_liked_people_posts()
+
+                self.vk_likesfinder.show_likes_count()
         except KeyboardInterrupt:
             self.vk_likesfinder.cli_report.print('ERROR: The program was interrupted by user')
+            self.vk_likesfinder.html_report.write('<br><b>ERROR: The program was interrupted by user</b><br>\n')
             self.exit_code = -1
-        except VkAPIError as ex:
-            self.vk_likesfinder.cli_report.print('ERROR: VkAPIError: {message}. Error code is {error_code}'.format(
-                message=ex.message, error_code=ex.code))
+        except VkApiError:
+            self.vk_likesfinder.cli_report.print('ERROR: VkAPIError')
             self.vk_likesfinder.cli_report.print('ERROR: {}'.format(traceback.format_exc()))
-            self.exit_code = -2
-        except VkAuthError as ex:
-            self.vk_likesfinder.cli_report.print('ERROR: VkAuthError: {message}'.format(message=ex))
             self.exit_code = -2
         except VkApiWrapperException as ex:
             self.vk_likesfinder.cli_report.print('Error: VkApiWrapperException: {message}'.format(message=ex))

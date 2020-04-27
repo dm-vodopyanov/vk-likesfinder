@@ -1,13 +1,11 @@
 import datetime
-import requests
-import time
 import os
 
-from vk_requests.exceptions import VkAPIError
+from vk_api.exceptions import VkApiError
+from vk_api.exceptions import ApiError
 from src.vk_api_wrapper import VkApiWrapper
 from src.html_report import HtmlReport
 from src.cli_report import CliReport
-from src.locale import locale, lang
 
 
 DEFAULT = 'all'  # it can't be vk.com/all as all is too short
@@ -69,7 +67,8 @@ class VkLikesFinder:
             with open(self.authorization_token_file, 'r') as authorization_token_file:
                 content = authorization_token_file.readlines()
                 if len(content) < 1:
-                    raise VkLikesFinderException(locale[0][lang])
+                    raise VkLikesFinderException('Incorrect authorization token file. Check documentation '
+                                                 'for more help.')
                 else:
                     token_config = content[0].replace('\n', '')
             self.token = token_config
@@ -101,34 +100,33 @@ class VkLikesFinder:
         self.location = location
 
     def set_header(self, version):
-        self.header = 'VK LikesFinder {}{}'.format(version, locale[18][lang])
+        self.header = 'VK LikesFinder {}'.format(version)
 
     def set_earliest_time(self):
         if not self.interval:
-            raise VkLikesFinderException(locale[1][lang])
+            raise VkLikesFinderException('Searching interval is empty')
         self.earliest_time = int(datetime.datetime.today().timestamp()) - int(self.interval) * 3600
 
     def initialize_html_report(self):
         if not self.user:
-            raise VkLikesFinderException(locale[2][lang])
+            raise VkLikesFinderException('User is not initialized')
         if not self.location:
-            raise VkLikesFinderException(locale[3][lang])
+            raise VkLikesFinderException('Cannot identify tool location')
         self.html_report.set_path(os.path.join(self.location, 'vk-likesfinder-report-{}_{}.html'.format(
             self.user, str(self.start_time).replace(' ', '_').replace(':', '.').lower())))
 
         self.html_report.initialize_file(self.html_report.path)
 
         if self.html_report.is_initialized:
-            self.cli_report.print('{}\n    {}'.format(locale[4][lang], self.html_report.path))
+            self.cli_report.print('HTML report created:\n    {}'.format(self.html_report.path))
             self.cli_report.print()
 
         self.html_report.write('<html><head><meta charset="utf-8"/>'
-                               '<title>{title} - {report}</title></head><body>\n'.format(title=self.header,
-                                                                                         report=locale[5][lang]))
-        self.html_report.write('<h2><img src="https://raw.githubusercontent.com/dmitryvodop/vk-likechecker/master/'
+                               '<title>{title} - Report</title></head><body>\n'.format(title=self.header))
+        self.html_report.write('<h2><img src="https://raw.githubusercontent.com/dm-vodopyanov/vk-likesfinder/master/'
                                'images/report/icon_report.png" alt="VK LikeChecker" width="19" height="16"> '
-                               '{title}</h2><b>{report_generated}</b> {date}<br><br>\n'.format(
-                                title=self.header, report_generated=locale[6][lang], date=self.start_time))
+                               '{title}</h2><b>Report generated:</b> {date}<br><br>\n'.format(
+                                title=self.header, date=self.start_time))
 
     def initialize_vk_api(self):
         self.vk_api_wrapper = VkApiWrapper(app_id=self.app_id, login=self.login, password=self.password,
@@ -136,58 +134,88 @@ class VkLikesFinder:
         self.vk_api_wrapper.initialize_vk_api()
 
         if self.vk_api_wrapper.check_if_vk_api_initialized():
-            self.cli_report.print(locale[7][lang])
-            self.cli_report.print('{}\n'.format(locale[8][lang]))
+            self.cli_report.print('Authorized to VK successfully.')
+            self.cli_report.print('VK API initialized successfully.\n')
         else:
-            self.cli_report.print(locale[9][lang])
+            self.cli_report.print('ERROR: Failed to initialize VK API')
 
         self.vk_api_wrapper.set_user_id(self.user)
 
-    def show_basic_info(self):
+    def generate_friends_list(self):
+        if not self.user:
+            raise VkLikesFinderException('User is not initialized')
+        self.vk_api_wrapper.get_user_friends().get('items')
+
+        report_file_name = 'vk-friends-report-{}-{}'.format(self.vk_api_wrapper.get_user_id(), self.user)
+        report_path = os.path.join(self.location, )
+        for friend in self.vk_api_wrapper.get_user_friends().get('items'):
+            print(friend['id'])
+
+    def show_basic_info_cli(self):
         if not self.vk_api_wrapper:
-            raise VkLikesFinderException(locale[10][lang])
-        if not self.html_report.file and self.html_report.is_initialized:
-            raise VkLikesFinderException(locale[11][lang])
+            raise VkLikesFinderException('VK API is not initialized')
+
         # print user first name and last name
         checking_user = '{} {}'.format(self.vk_api_wrapper.get_user_first_name(),
                                        self.vk_api_wrapper.get_user_last_name())
-        self.cli_report.print('{}: {}'.format(locale[12][lang], checking_user))
+        self.cli_report.print('{}: {}'.format('Checking user', checking_user))
 
-        self.html_report.write('<b>{}:<br><br><a href="{}" target="_blank"><img style="margin-left:30px; '
+    def show_basic_info_html(self):
+        if not self.vk_api_wrapper:
+            raise VkLikesFinderException('VK API is not initialized')
+        if not self.html_report.file and self.html_report.is_initialized:
+            raise VkLikesFinderException('HTML report is not initialized')
+        # print user first name and last name
+        checking_user = '{} {}'.format(self.vk_api_wrapper.get_user_first_name(),
+                                       self.vk_api_wrapper.get_user_last_name())
+
+        self.html_report.write('<b>Checking user:<br><br><a href="{}" target="_blank"><img style="margin-left:30px; '
                                'margin-right:10px" src="{}" alt="{}" align="left"></a> '.format(
-                                locale[12][lang],
                                 'https://vk.com/id{}'.format(self.vk_api_wrapper.user_id),
                                 self.vk_api_wrapper.get_user_avatar_small(), checking_user))
         self.html_report.write('<a href="{}" target="_blank">{}</a></b><br><br><br>\n'.format(
             'https://vk.com/id{}'.format(self.vk_api_wrapper.user_id),
             checking_user.replace(' ', '<br>')))
 
+    def show_extended_info_cli(self):
+        if not self.vk_api_wrapper:
+            raise VkLikesFinderException('VK API is not initialized')
+
         # print selected searching interval
         earliest_time_formatted = datetime.datetime.fromtimestamp(self.earliest_time)
 
-        self.cli_report.print('{}: {} {} {})'.format(locale[13][lang], self.interval, locale[14][lang],
-                                                     earliest_time_formatted))
+        self.cli_report.print('Searching interval: {} hour(s) till now (since {})'.format(self.interval,
+                                                                                          earliest_time_formatted))
         self.cli_report.print()
 
-        self.html_report.write('<b>{}:</b><br><br><div style="text-indent:30px;">{} {} {})</div><br><br>\n'.format(
-            locale[13][lang], self.interval, locale[14][lang], earliest_time_formatted))
+    def show_extended_info_html(self):
+        if not self.vk_api_wrapper:
+            raise VkLikesFinderException('VK API is not initialized')
+        if not self.html_report.file and self.html_report.is_initialized:
+            raise VkLikesFinderException('HTML report is not initialized')
+
+        # print selected searching interval
+        earliest_time_formatted = datetime.datetime.fromtimestamp(self.earliest_time)
+
+        self.html_report.write('<b>Searching interval:</b><br><br><div style="text-indent:30px;">{} hour(s) till now '
+                               '(since {})</div><br>\n'.format(self.interval, earliest_time_formatted))
 
     def show_likes_count(self):
         if not self.html_report.file and self.html_report.is_initialized:
-            raise VkLikesFinderException(locale[11][lang])
+            raise VkLikesFinderException('HTML report is not initialized')
 
-        self.cli_report.print('\n{} {}'.format(self.likes_count, locale[15][lang]))
+        self.cli_report.print('{} like(s) were found.'.format(self.likes_count))
 
-        self.html_report.write('<br><br><b>{} {}</b>\n'.format(self.likes_count, locale[15][lang]))
+        self.html_report.write('<br><b>{} like(s) were found.</b>\n'.format(self.likes_count))
 
     def get_app_id(self):
         return self.app_id
 
     def get_liked_public_pages_posts(self):
         if not self.vk_api_wrapper:
-            raise VkLikesFinderException(locale[10][lang])
+            raise VkLikesFinderException('VK API is not initialized')
         if not self.html_report.file and self.html_report.is_initialized:
-            raise VkLikesFinderException(locale[11][lang])
+            raise VkLikesFinderException('HTML report is not initialized')
 
         public_pages = self._parse_selected_pages(self.public_pages, PUBLIC_PAGES)
 
@@ -198,15 +226,15 @@ class VkLikesFinder:
 
     def get_liked_groups_posts(self):
         if not self.vk_api_wrapper:
-            raise VkLikesFinderException(locale[10][lang])
+            raise VkLikesFinderException('VK API is not initialized')
         if not self.html_report.file and self.html_report.is_initialized:
-            raise VkLikesFinderException(locale[11][lang])
+            raise VkLikesFinderException('HTML report is not initialized')
 
         try:
             groups = self._parse_selected_pages(self.groups, GROUPS)
-        except VkAPIError as ex:
-            self.cli_report.print(locale[28][lang])
-            self.cli_report.print('{}\n  {message}\n'.format(locale[16][lang], message=ex.message))
+        except ApiError as ex:
+            self.cli_report.print('Checking groups...')
+            self.cli_report.print('ERROR: Failed to get user\'s groups:\n  {message}\n'.format(message=ex))
             return []
 
         if not groups:
@@ -216,9 +244,9 @@ class VkLikesFinder:
 
     def get_liked_people_posts(self):
         if not self.vk_api_wrapper:
-            raise VkLikesFinderException(locale[10][lang])
+            raise VkLikesFinderException('VK API is not initialized')
         if not self.html_report.file and self.html_report.is_initialized:
-            raise VkLikesFinderException(locale[11][lang])
+            raise VkLikesFinderException('HTML report is not initialized')
 
         people = self._parse_selected_pages(self.people, PEOPLE)
 
@@ -267,15 +295,16 @@ class VkLikesFinder:
                         if _page.get('id') == page[0].get('id'):
                             can_skip = True
 
-                            self.cli_report.print('{} {}'.format(locale[17][lang], self._get_item_name(_page)))
+                            self.cli_report.print('SKIPPING: {}'.format(self._get_item_name(_page)))
                             pages.remove(_page)
                             break
 
                     if not can_skip:
-                        self.cli_report.print(locale[29][lang].format(item, item_type))
+                        self.cli_report.print('WARNING: can\'t skip {} as it is not in '
+                                              'the default set of {}'.format(item, item_type))
                     # TODO: add skipping persons for public pages here
-                except VkAPIError:
-                    self.cli_report.print(locale[30][lang].format(item, item_type))
+                except VkApiError:
+                    self.cli_report.print('WARNING: {} is invalid {}'.format(item, item_type))
             else:
                 try:
                     page = self._get_item_page_info(item, item_type)
@@ -292,21 +321,22 @@ class VkLikesFinder:
                     if not is_duplicate:
                         pages.extend(page)
                     else:
-                        self.cli_report.print(locale[29][lang].format(item, item_type))
-                except VkAPIError:
-                    self.cli_report.print(locale[30][lang].format(item, item_type))
+                        self.cli_report.print('WARNING: can\'t skip {} as it is not in '
+                                              'the default set of {}'.format(item, item_type))
+                except VkApiError:
+                    self.cli_report.print('WARNING: {} is invalid {}'.format(item, item_type))
         return pages
 
     def _get_liked_posts(self, source, item_type):
         if not self.vk_api_wrapper:
-            raise VkLikesFinderException(locale[10][lang])
+            raise VkLikesFinderException('VK API is not initialized')
         if not self.earliest_time:
-            raise VkLikesFinderException(locale[31][lang])
+            raise VkLikesFinderException('Earliest time is not calculated')
         if not self.html_report.file and self.html_report.is_initialized:
-            raise VkLikesFinderException(locale[11][lang])
+            raise VkLikesFinderException('HTML report is not initialized')
 
-        self.cli_report.print(locale[32][lang].format(len(source), item_type))
-        self.html_report.write('<br><b>{}</b><br><br>\n'.format(locale[32][lang].format(len(source), item_type)))
+        self.cli_report.print('Checking {} {}...'.format(len(source), item_type))
+        self.html_report.write('<br><b>Checking {} {}...</b><br><br>\n'.format(len(source), item_type))
         result = []
         item_counter = 0
         for item in source:
@@ -322,15 +352,9 @@ class VkLikesFinder:
                 header_printed = False
 
                 posts_offset = 0
+                posts_count = 0
                 while True:
-                    for retry in range(10):
-                        try:
-                            posts = self.vk_api_wrapper.get_posts_from_wall(item_id, posts_offset)
-                            break
-                        except requests.exceptions.RequestException:
-                            time.sleep(15)
-                            self.cli_report.print(locale[25][lang])
-                            self.initialize_vk_api()
+                    posts = self.vk_api_wrapper.get_posts_from_wall(item_id, posts_offset)
 
                     if not posts['items']:
                         break
@@ -338,45 +362,29 @@ class VkLikesFinder:
                     is_some_post_older_earliest_time = False
 
                     for post in posts['items']:
-                        status = locale[33][lang].format(item_counter, len(source), name)
+                        status = 'Checking {}/{}: {}: {} posts were analyzed'.format(item_counter, len(source),
+                                                                                     name, posts_count)
                         self.cli_report.print(status, end='\r')
+                        posts_count = posts_count + 1
                         if post['date'] >= self.earliest_time:
-                            likes_offset = 0
-                            while True:
-                                for retry in range(10):
-                                    try:
-                                        likes = self.vk_api_wrapper.get_likes_from_post(item_id, post['id'],
-                                                                                        likes_offset)
-                                        break
-                                    except requests.exceptions.RequestException:
-                                        time.sleep(15)
-                                        self.cli_report.print(locale[25][lang])
-                                        self.initialize_vk_api()
+                            if self.vk_api_wrapper.is_post_liked_by_user(owner_id=item_id, item_id=post['id']):
+                                if not header_printed:
+                                    header_printed = True
+                                    self.cli_report.print(name)
+                                    self.html_report.write('<b>{}</b><br>\n'.format(name))
 
-                                if not likes['items']:
-                                    break
+                                link = 'https://vk.com/wall{owner_id}_{item_id}'.format(
+                                    owner_id=item_id, item_id=post['id'])
 
-                                if self.vk_api_wrapper.get_user_id() in likes['items']:
-                                    if not header_printed:
-                                        header_printed = True
-                                        self.cli_report.print(name)
+                                self.cli_report.print('    {}'.format(link))
 
-                                        self.html_report.write('<b>{}</b><br>\n'.format(name))
+                                self.html_report.write('<div style="text-indent:30px;"><a href="{0}" '
+                                                       'target="_blank">{0}</a></div>\n'.format(link))
 
-                                    link = 'https://vk.com/wall{owner_id}_{item_id}'.format(
-                                        owner_id=item_id, item_id=post['id'])
+                                result.append([name, link])
 
-                                    self.cli_report.print('    {}'.format(link))
-
-                                    self.html_report.write('<div style="text-indent:30px;"><a href="{0}" '
-                                                           'target="_blank">{0}</a></div>\n'.format(link))
-
-                                    result.append([name, link])
-
-                                    self.likes_count += 1
-                                    break
-
-                                likes_offset += 1000
+                                self.likes_count += 1
+                                break
                         else:
                             if not post.get('is_pinned'):
                                 is_some_post_older_earliest_time = True
@@ -386,14 +394,15 @@ class VkLikesFinder:
                         break
 
                     posts_offset += 100
-            except VkAPIError:
+            except VkApiError:
                 pass
 
-        scan_completed = locale[34][lang].format(len(source), item_type)
+        scan_completed = 'Checking {} {}... completed.'.format(len(source), item_type)
         if not len(result):
-            scan_completed += locale[27][lang]
-        self.cli_report.print(scan_completed, end='\r')
+            scan_completed += ' Nothing found.'
+        self.cli_report.print(scan_completed)
         self.cli_report.print()
+        self.html_report.write('<br><b>{}</b><br><br>\n'.format(scan_completed))
         return result
 
     @staticmethod

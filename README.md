@@ -1,13 +1,14 @@
 # VK LikesFinder
 
 VK LikesFinder is a command line tool which provides you to check which posts any VK user liked. It is written on 
-Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) module. 
+Python 3 with using of [vk_api](https://github.com/python273/vk_api) module. 
 
-**Download the latest VK LikesFinder release [here](https://github.com/dmitryvodop/vk_likesfinder/releases).**
+**Download the latest VK LikesFinder release [here](https://github.com/dm-vodopyanov/vk_likesfinder/releases).**
 
 | Release  | Windows  | Linux  | macOS  | Docs  |
 | -------- | -------- | ------ | ------ | ----- |
-| 1.0.0    | [vk-likesfinder-1.0.0-cli-win.exe](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-win.exe) | [vk-likesfinder-1.0.0-cli-lin](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-lin) | [vk-likesfinder-1.0.0-cli-mac](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-mac) | [vk-likesfinder-1.0.0-readme.pdf](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-readme.pdf) |
+| 2.0.0    | vk-likesfinder-2.0.0-cli-win.exe | vk-likesfinder-2.0.0-cli-lin | vk-likesfinder-2.0.0-cli-mac | vk-likesfinder-2.0.0-readme.pdf |
+| 1.0.0    | [vk-likesfinder-1.0.0-cli-win.exe](https://github.com/dm-vodopyanov/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-win.exe) | [vk-likesfinder-1.0.0-cli-lin](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-lin) | [vk-likesfinder-1.0.0-cli-mac](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-cli-mac) | [vk-likesfinder-1.0.0-readme.pdf](https://github.com/dmitryvodop/vk-likesfinder/releases/download/1.0.0/vk-likesfinder-1.0.0-readme.pdf) |
 
 
 ## Getting started
@@ -21,7 +22,7 @@ Python 3 with using of [vk-requests](https://github.com/prawn-cake/vk-requests) 
    ```<USER>``` is person that should to be checked; supports short name of page (e.g., durov) 
    or user ID (e.g., 1),  
    ```<INTERVAL>``` is searching interval in hours till now, e.g., 10.   
-   E.g.: **```vk-likesfinder-1.0.1-cli-win.exe --user durov --interval 10```**  
+   E.g.: **```vk-likesfinder-2.0.0-cli-win.exe --user durov --interval 10```**  
    See the full list of [Supported command line options](#supported-command-line-options) for more.
 3. If you did not provide access/service token through ```--token``` option, or did not create 
 ```authorization_token.txt``` file with the token inside it in the directory with VK LikesFinder
@@ -35,7 +36,7 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
 
 ## Key features
 1. Cross-platform, supports Windows, Linux and macOS.
-2. Check selected user's likes on his friends, public and group pages
+2. Check selected user's likes of his friends, public and group pages
 3. Customize the lists of public pages, groups and friends (for more see [Customize the list of public pages, groups and friends](#customize-the-list-of-public-pages-groups-and-friends)):
    1. skip some pages,
    2. add pages (public pages or groups), on which selected user doesn't subscribed
@@ -43,6 +44,7 @@ using one of three methods (see [Authorization methods](#authorization-methods) 
 4. Select the searching interval in hours
 5. Clear and handy authorization process to VK API: for more see [Authorization methods](#authorization-methods)
 6. Different report formats: for more see [Reports](#reports)
+7. Generate list of selected user's friends
 
 
 ## Authorization methods
@@ -52,7 +54,7 @@ binary/script, you will be redirected to the following user-interactive mode:
 ```
 You are not authorized to access VK.
 
-You can authorize to VK in the 3 ways:
+You can authorize to VK in 3 ways:
   1. Enter login and password
   2. Use browser to generate access token and type it here (PREFERRED)
   3. Use browser to create empty VK standalone application, generate service token
@@ -80,7 +82,7 @@ After logging in to VK and granting the access to the VK LikesFinder app, you
 need to copy access_token from address bar and paste it below.
 Enter access token here: _
 ```
-This method provides you to create your own access token - the unique character set. You will be 
+This method allows you to create your own access token - the unique character set. You will be 
 re-directed to oauth.vk.com, where you need to log in and grant the access to VK LikesFinder app. 
 After that you will be re-directed to the blank page. It will have the following address in 
 address bar:
@@ -120,7 +122,7 @@ You can customize the lists of public pages, groups and people in which you want
 user's likes.  
 By default, it is ```"all"```. It means that all user's public pages, groups and friends will be scanned:
 ```
---public_pages "all"
+--public-pages "all"
 --groups "all"
 --people "all"
 ```
@@ -140,7 +142,7 @@ or
 
 E.g.,  
 ```
---public_pages "all,pikabu,tj"
+--public-pages "all,pikabu,tj"
 --groups "all,apple"
 --people "all,1"
 ```
@@ -148,7 +150,7 @@ If you want to scan only some specific pages (not the default ones), don't add `
 public page(s), group(s) or person (people): ```"some_value_1,some_value_2"```.  
 E.g.,  
 ```
---public_pages "pikabu,tj"
+--public-pages "pikabu,tj"
 --groups "apple"
 --people "durov"
 ```
@@ -158,7 +160,7 @@ If you want to skip some public pages, groups or people from ```"all"```, add ``
 friends with short names ```"person_1"``` and ```"person_2"```.  
 E.g.,
 ```
---public_pages "!leprum"
+--public-pages "!leprum"
 --groups "all,!dccmc"
 --people "!durov"
 ```
@@ -166,7 +168,7 @@ If you want to completely skip checking of public pages, groups or people, pass 
 some of these options.  
 E.g.,
 ```
---public_pages "!leprum"
+--public-pages "!leprum"
 --groups "none"
 --people "none"
 ```
@@ -184,9 +186,9 @@ The similar report will be generated in the directory where application was laun
 ### Command line
 
 ```
-root@ubuntu:~$ vk-likesfinder-1.0.1-cli-lin --user *** --interval 100
+root@ubuntu:~$ vk-likesfinder-2.0.0-cli-lin --user *** --interval 100
 ===============================================================================
-VK LikesFinder 1.0.1
+VK LikesFinder 2.0.0
 ===============================================================================
 
 HTML report created: 
@@ -198,7 +200,7 @@ VK API initialized successfully.
 Checking user: Name Surname
 Searching interval: 100 hour(s) till now (since 2019-01-09 13:58:00)
 
-Check 43 public pages...
+Checking 43 public pages...
 Пикабу
     https://vk.com/wall-31480508_387695
     https://vk.com/wall-31480508_387689
@@ -215,23 +217,23 @@ Check 43 public pages...
     https://vk.com/wall-30022666_298297
 9GAG
     https://vk.com/wall-32041317_500984
-Check 43/43
+Checking 43/43 public pages... completed
 
-Check 14 groups...
+Checking 14 groups...
 The Elder Scrolls
     https://vk.com/wall-22192347_631644
-Check 14/14
+Checking 14/14 groups... completed
 
-Check 125 friends...
+Checking 125 friends...
 Павел Дуров
     https://vk.com/wall1_2442097
-Check 125/125
+Checking 125/125 friends... completed
 
 14 like(s) were found.
 ```
 
 ### Python list
-If you Python developer, you can call ```get_liked_public_pages_posts(...)``` and/or 
+If you a Python developer, you can call ```get_liked_public_pages_posts(...)``` and/or 
 ```get_liked_groups_posts(...)``` and/or ```get_liked_people_posts(...)``` from 
 ```VkLikesFinder``` class in src/vk_likesfinder.py. 
 The following will return:
